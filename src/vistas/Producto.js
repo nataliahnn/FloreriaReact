@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/Producto.css';
 
-function Producto({ producto, agregarAlCompra }) { // prop corregida
+function Producto({ producto, agregarAlCompra }) { 
   const [cantidad, setCantidad] = useState(1);
 
   return (

@@ -8,26 +8,27 @@ function Compra({ compra, setCompra }) {
     setCompra(nuevaCompra);
   }
 
-  const total = compra.reduce((acc, producto) => acc + producto.precio * producto.cantidad, 0);
-
   return (
-    <div className="compra" style={{ textAlign: 'center', backgroundColor: '#fef3f3', padding: '20px', minHeight: '100vh' }}>
-      <h2>Tu Compra</h2>
+    <div className="compra">
+      <h2>Tu carrito ({compra.length})</h2>
 
       {compra.length === 0 ? (
-        <p>No hay productos</p>
+        <p>No hay productos en el carrito</p>
       ) : (
         compra.map((producto) => (
-          <div className="compra-item" key={producto.id} style={{ marginBottom: '15px' }}>
-            <span>{producto.nombre} ({producto.cantidad}) - ${producto.precio}</span>
-            <button className="btn-borrar" onClick={() => eliminarProducto(producto.id)} style={{ marginLeft: '10px' }}>
+          <div className="compra-item" key={producto.id}>
+            <img src={producto.imagen} alt={producto.nombre} className="compra-img" />
+            <span>{producto.nombre} - ${producto.precio}</span>
+            <button className="btn-borrar" onClick={() => eliminarProducto(producto.id)}>
               Borrar
             </button>
           </div>
         ))
       )}
 
-      {compra.length > 0 && <h3>Total: ${total}</h3>}
+      {compra.length > 0 && (
+        <h3>Total: ${compra.reduce((total, p) => total + p.precio * (p.cantidad || 1), 0)}</h3>
+      )}
     </div>
   );
 }

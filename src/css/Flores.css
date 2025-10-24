@@ -1,0 +1,19 @@
+.flores {
+  text-align: center; 
+  padding: 20px;
+}
+
+.flores h2 {
+  font-size: 2.5rem;
+  color: #8F004E;
+  margin-bottom: 20px;
+}
+
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 20px; 
+  justify-items: center; 
+  align-items: start;
+}
