@@ -10,7 +10,7 @@ function Compra({ compra, setCompra }) {
 
   return (
     <div className="compra">
-      <h2>Tu carrito ({compra.length})</h2>
+      <h2>Tu carrito ({compra.reduce((acc, p) => acc + (p.cantidad || 1), 0)} items)</h2>
 
       {compra.length === 0 ? (
         <p>No hay productos en el carrito</p>
@@ -18,7 +18,11 @@ function Compra({ compra, setCompra }) {
         compra.map((producto) => (
           <div className="compra-item" key={producto.id}>
             <img src={producto.imagen} alt={producto.nombre} className="compra-img" />
-            <span>{producto.nombre} - ${producto.precio}</span>
+            <div className="compra-detalle">
+              <span><strong>{producto.nombre}</strong></span>
+              <div><span>Cantidad: {producto.cantidad || 1}</span></div>
+              
+            </div>
             <button className="btn-borrar" onClick={() => eliminarProducto(producto.id)}>
               Borrar
             </button>

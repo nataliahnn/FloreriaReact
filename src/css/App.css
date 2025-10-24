@@ -1,4 +1,4 @@
-.App, .home, .mercancia, .carrito {
+.App, .home, html, .mercancia, .carrito {
   text-align: center;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -112,3 +112,27 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   color: #8F004E;
 }
+
+.footer {
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: center;
+  padding: 1rem;
+  background-color: #ffe6f0;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.footer a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
