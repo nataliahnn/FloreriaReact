@@ -1,0 +1,26 @@
+.App, .home, .mercancia, .carrito {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fffaf0;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #ffe6f0;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #ff3399;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: #cc0066;
+}

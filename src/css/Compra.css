@@ -1,0 +1,54 @@
+.carrito {
+  margin-top: 30px;
+  border-top: 2px dashed #ff69b4;
+  padding-top: 20px;
+}
+
+.carrito ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.carrito li {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.carrito h3 {
+  margin-top: 15px;
+  color: #ff1493;
+}
+.carrito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  background-color: #fce4ec;
+  padding: 20px;
+}
+
+.carrito-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.btn-borrar {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-borrar:hover {
+  background-color: #ff3b3b;
+}

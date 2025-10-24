@@ -1,0 +1,24 @@
+.inicio {
+  text-align: center;
+  padding: 20px;
+}
+
+.banner img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display:block;
+}
+
+.inicio h1 {
+  color: #ff3399;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.inicio p {
+  font-size: 1.5rem;
+  color: #333;
+}
