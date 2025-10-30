@@ -1,7 +1,7 @@
 import React from 'react';
 import Producto from './Producto'; 
 import '../css/Flores.css';
-
+//arreglo con productos
 function Flores({ agregarAlCompra }) { 
   const productos = [
     { id: 1, nombre: 'Bouquet de Novia', precio: 30800, descripcion: 'Bouquet de novia primaveral', imagen: '/productos/pro1 (1).jpg' },
@@ -9,7 +9,7 @@ function Flores({ agregarAlCompra }) {
     { id: 3, nombre: 'Arreglo rosa', precio: 10800, descripcion: 'Arreglos alegres', imagen: '/productos/producto1.jpg' },
     { id: 4, nombre: 'Girasoles', precio: 38500, descripcion: 'Girasoles alegres', imagen: '/productos/pro3.jpg' }
   ];
-
+{/*para crear el producto, id key, producto y agregar al carrito*/}
   return (
     <div className="flores">
       <h2>🌸 Nuestros productos 🌸</h2>

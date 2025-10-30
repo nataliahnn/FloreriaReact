@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/Producto.css';
-
+//recibe producto con flores y funcion que agrega el producto al carrito
 function Producto({ producto, agregarAlCompra }) { 
   const [cantidad, setCantidad] = useState(1);
 
@@ -13,11 +13,11 @@ function Producto({ producto, agregarAlCompra }) {
 
       <input
         type="number"
-        min="1"
+        min="1" /*si fuera la cantidad 0 el carrito muestra un mensaje*/
         value={cantidad}
         onChange={(e) => setCantidad(parseInt(e.target.value))}
       />
-
+{/*boton para agregar el producto con cantidad al carrito*/}
       <button onClick={() => agregarAlCompra({ ...producto, cantidad })}>
         Agregar al carrito
       </button>
