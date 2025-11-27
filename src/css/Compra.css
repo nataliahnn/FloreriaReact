@@ -49,3 +49,31 @@
 .btn-borrar:hover {
   background-color: #ff3b3b;
 }
+
+.contador-input {
+  width: 60px;        /* ancho pequeño */
+  padding: 4px;       /* más compacto */
+  text-align: center; /* número centrado */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Para que no se expanda en el grid */
+.compra-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: auto; /* clave para que no crezca de más */
+}
+
+.compra-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Por si tu input se estira por el contenedor */
+.compra-item input[type="number"] {
+  max-width: 70px !important;
+}
