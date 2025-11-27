@@ -8,12 +8,7 @@ import Contacto from './vistas/Contacto';
 import './css/App.css';
 
 function App() {
-  const [compra, setCompra] = useState([
-    { id: 1, nombre: "Bouquet de novia", precio: 30800, cantidad: 1 },
-    { id: 2, nombre: "Rosas Azules", precio: 18000, cantidad: 1 },
-    { id: 3, nombre: "Arreglo Rosa", precio: 10800, cantidad: 1},
-    { id: 4, nombre: "Girasoles", precio: 38500, cantidad: 1 },
-  ]);
+  const [compra, setCompra] = useState([]);
 
   const agregarAlCompra = (producto) => {
     const productoExistente = compra.find(item => item.id === producto.id);

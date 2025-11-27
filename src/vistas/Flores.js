@@ -1,15 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Producto from './Producto'; 
 import '../css/Flores.css';
-//arreglo con productos
-function Flores({ agregarAlCompra }) { 
-  const productos = [
-    { id: 1, nombre: 'Bouquet de Novia', precio: 30800, descripcion: 'Bouquet de novia primaveral', imagen: '/productos/pro1 (1).jpg' },
-    { id: 2, nombre: 'Rosas Azules', precio: 18000, descripcion: 'Rosas teñidas', imagen: '/productos/producto3.jpg' },
-    { id: 3, nombre: 'Arreglo rosa', precio: 10800, descripcion: 'Arreglos alegres', imagen: '/productos/producto1.jpg' },
-    { id: 4, nombre: 'Girasoles', precio: 38500, descripcion: 'Girasoles alegres', imagen: '/productos/pro3.jpg' }
-  ];
+import { obtenerProductos } from '../api/inventarioAPI';
+
+//Componente para mostrar el catalogo de productos
+function Flores({ agregarAlCompra }) {  
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Cargar productos desde la API al montar el componente
+  useEffect(() => {
+    const cargarProductos = async () => {
+      try {
+        setCargando(true);
+        setError(null);
+        const datos = await obtenerProductos();
+        setProductos(datos);
+      } catch (err) {
+        console.error('Error al cargar productos:', err);
+        setError('No se pudieron cargar los productos. Intenta más tarde.');
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarProductos();
+  }, []);
 {/*para crear el producto, id key, producto y agregar al carrito*/}
+  if (cargando) {
+    return <div className="flores"><h2>⏳ Cargando productos...</h2></div>;
+  }
+
+  if (error) {
+    return <div className="flores"><h2>❌ {error}</h2></div>;
+  }
+
+  if (productos.length === 0) {
+    return <div className="flores"><h2>No hay productos disponibles</h2></div>;
+  }
+
   return (
     <div className="flores">
       <h2>🌸 Nuestros productos 🌸</h2>
