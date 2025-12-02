@@ -1,0 +1,205 @@
+.atenea-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.atenea-container h1 {
+  color: #8F004E;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.atenea-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.atenea-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.atenea-section h2 {
+  color: #8F004E;
+  border-bottom: 3px solid #d4a5c3;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.tabla-inventario,
+.tabla-formularios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.tabla-inventario th,
+.tabla-inventario td,
+.tabla-formularios th,
+.tabla-formularios td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.tabla-inventario th,
+.tabla-formularios th {
+  background-color: #d4a5c3;
+  color: white;
+  font-weight: bold;
+}
+
+.tabla-inventario tr:nth-child(even),
+.tabla-formularios tr:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.tabla-inventario tr:hover,
+.tabla-formularios tr:hover {
+  background-color: #e8d5e8;
+}
+
+.acciones-botones {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-editar,
+.btn-eliminar,
+.btn-guardar,
+.btn-cancelar,
+.btn-agregar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-editar {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.btn-eliminar {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #da190b;
+  transform: scale(1.05);
+}
+
+.btn-guardar {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-guardar:hover {
+  background-color: #0b7dda;
+  transform: scale(1.05);
+}
+
+.btn-cancelar {
+  background-color: #999;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #777;
+  transform: scale(1.05);
+}
+
+.btn-agregar {
+  background-color: #8F004E;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.btn-agregar:hover {
+  background-color: #6d0039;
+  transform: scale(1.05);
+}
+
+.editar-producto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 5px;
+  border-left: 4px solid #d4a5c3;
+}
+
+.editar-producto label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.editar-producto input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.editar-producto input:focus {
+  outline: none;
+  border-color: #8F004E;
+  box-shadow: 0 0 5px rgba(143, 0, 78, 0.3);
+}
+
+.sin-datos {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .atenea-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .tabla-inventario,
+  .tabla-formularios {
+    font-size: 0.9rem;
+  }
+
+  .tabla-inventario th,
+  .tabla-inventario td,
+  .tabla-formularios th,
+  .tabla-formularios td {
+    padding: 8px;
+  }
+
+  .btn-editar,
+  .btn-eliminar,
+  .btn-guardar,
+  .btn-cancelar {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}

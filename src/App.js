@@ -5,6 +5,7 @@ import Flores from './vistas/Flores';
 import Compra from './vistas/Compra';
 import SobreNosotros from './vistas/SobreNosotros';
 import Contacto from './vistas/Contacto';
+import Atenea from './vistas/Atenea';
 import './css/App.css';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path="/compra" element={<Compra compra={compra} setCompra={setCompra} />} />
           <Route path="/sobre-nosotros" element={<SobreNosotros />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/atenea" element={<Atenea />} />
         </Routes>
 
         

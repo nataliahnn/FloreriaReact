@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../css/App.css';
+import { enviarFormulario } from '../api/formularioAPI';
 
 function Contacto() {
   const [form, setForm] = useState({
@@ -14,6 +15,8 @@ function Contacto() {
     mensaje: ""
   });
 
+  const [enviando, setEnviando] = useState(false);
+
   // Actualiza los valores del formulario
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,7 +25,7 @@ function Contacto() {
     setErrores({ ...errores, [e.target.name]: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let erroresTemp = {};
@@ -49,22 +52,30 @@ function Contacto() {
       return;
     }
 
-    // Si no hay errores, se envía
-    alert("Formulario enviado correctamente ✔️");
+    // Si no hay errores, se envía a la API
+    setEnviando(true);
+    try {
+      await enviarFormulario(form);
+      alert("Formulario enviado correctamente.");
 
-    // Resetear formulario
-    setForm({
-      nombre: "",
-      email: "",
-      mensaje: ""
-    });
+      // Resetear formulario
+      setForm({
+        nombre: "",
+        email: "",
+        mensaje: ""
+      });
 
-    // Limpiar errores
-    setErrores({
-      nombre: "",
-      email: "",
-      mensaje: ""
-    });
+      // Limpiar errores
+      setErrores({
+        nombre: "",
+        email: "",
+        mensaje: ""
+      });
+    } catch (error) {
+      alert("Error al enviar el formulario. Por favor, intenta nuevamente.");
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -107,7 +118,9 @@ function Contacto() {
         ></textarea>
         {errores.mensaje && <p className="error-campo">{errores.mensaje}</p>}
 
-        <button type="submit">Enviar</button>
+        <button type="submit" disabled={enviando}>
+          {enviando ? "Enviando..." : "Enviar"}
+        </button>
       </form>
     </div>
   );
