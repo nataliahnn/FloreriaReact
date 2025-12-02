@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Atenea.css';
-import { obtenerProductos } from '../api/inventarioAPI';
+import { obtenerProductos, actualizarProducto, eliminarProducto as eliminarProductoAPI } from '../api/inventarioAPI';
 import { obtenerFormularios, eliminarFormulario } from '../api/formularioAPI';
 
 function Atenea() {
@@ -56,15 +57,21 @@ function Atenea() {
     setProductoActualizado({});
   };
 
-  const guardarProducto = () => {
-    setProductos(
-      productos.map((p) =>
-        p.id === productoActualizado.id ? productoActualizado : p
-      )
-    );
-    setProductoEditando(null);
-    setProductoActualizado({});
-    alert('Producto actualizado correctamente.');
+  const guardarProducto = async () => {
+    try {
+      await actualizarProducto(productoActualizado.id, productoActualizado);
+      setProductos(
+        productos.map((p) =>
+          p.id === productoActualizado.id ? productoActualizado : p
+        )
+      );
+      setProductoEditando(null);
+      setProductoActualizado({});
+      alert('Producto actualizado correctamente.');
+    } catch (error) {
+      console.error('Error al actualizar producto:', error);
+      alert('Error al actualizar el producto');
+    }
   };
 
   const cambiarCampoProducto = (campo, valor) => {
@@ -78,7 +85,7 @@ function Atenea() {
   const eliminarProducto = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
       try {
-        // Aquí iría la llamada a la API para eliminar
+        await eliminarProductoAPI(id);
         setProductos(productos.filter((p) => p.id !== id));
         alert('Producto eliminado correctamente.');
       } catch (error) {
@@ -257,10 +264,15 @@ function Atenea() {
       </div>
 
       {/* Botón para refrescar datos */}
-      <div style={{ textAlign: 'center', marginTop: '30px' }}>
+      <div style={{ textAlign: 'center', marginTop: '30px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="btn-agregar" onClick={cargarDatos}>
           Actualizar Tablas
         </button>
+        <Link to="/">
+          <button className="btn-agregar" style={{ backgroundColor: '#666' }}>
+            Volver al Inicio
+          </button>
+        </Link>
       </div>
     </div>
   );

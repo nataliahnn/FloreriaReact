@@ -16,6 +16,58 @@ export const obtenerProductos = async () => {
   }
 };
 
+// Obtiene todos los formularios
+export const obtenerFormularios = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/formulario`);
+    if (!response.ok) {
+      throw new Error(`Error en la API: ${response.status}`);
+    }
+    const datos = await response.json();
+    return datos;
+  } catch (error) {
+    console.error('Error al obtener formularios:', error);
+    return [];
+  }
+};
+
+// Actualiza un producto por ID
+export const actualizarProducto = async (id, producto) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/productos/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(producto),
+    });
+    if (!response.ok) {
+      throw new Error(`Error en la API: ${response.status}`);
+    }
+    const datos = await response.json();
+    return datos;
+  } catch (error) {
+    console.error(`Error al actualizar producto ${id}:`, error);
+    throw error;
+  }
+};
+
+// Elimina un producto por ID
+export const eliminarProducto = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/productos/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Error en la API: ${response.status}`);
+    }
+    return true;
+  } catch (error) {
+    console.error(`Error al eliminar producto ${id}:`, error);
+    throw error;
+  }
+};
+
 // Productos por defecto si la API falla
 const obtenerProductosPorDefecto = () => {
   return [
