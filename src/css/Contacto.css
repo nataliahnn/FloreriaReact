@@ -1,0 +1,138 @@
+.contacto-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  background-color: #fce4ec;
+  padding: 20px;
+}
+
+.contacto-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: left;
+  color: #8F004E;
+}
+
+.contacto-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.contacto-form label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.contacto-form input,
+.contacto-form textarea {
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  color: #8F004E;
+  font-family: Arial, sans-serif;
+}
+
+.contacto-form input:focus,
+.contacto-form textarea:focus {
+  outline: none;
+  border-color: #8F004E;
+  box-shadow: 0 0 5px rgba(143, 0, 78, 0.3);
+}
+
+.contacto-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contacto-form button {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #8F004E;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.contacto-form button:hover {
+  background-color: #6d0039;
+  transform: scale(1.02);
+}
+
+.contacto-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-campo {
+  color: #ff0000;
+  font-size: 0.85rem;
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .contacto-form {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .contacto-form h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .contacto-form label {
+    font-size: 0.95rem;
+  }
+
+  .contacto-form textarea {
+    min-height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contacto-container {
+    min-height: auto;
+    padding: 15px 10px;
+  }
+
+  .contacto-form {
+    padding: 12px;
+  }
+
+  .contacto-form h2 {
+    font-size: 1.3rem;
+  }
+
+  .contacto-form label {
+    margin-top: 8px;
+    font-size: 0.9rem;
+  }
+
+  .contacto-form input,
+  .contacto-form textarea {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+
+  .contacto-form button {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  .error-campo {
+    font-size: 0.8rem;
+  }
+}

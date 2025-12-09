@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/App.css';
+import '../css/Contacto.css';
 import { enviarFormulario } from '../api/formularioAPI';
 
 function Contacto() {

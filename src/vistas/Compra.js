@@ -26,52 +26,58 @@ function Compra({ compra, setCompra }) {
   return (
     <div className="compra">
       <h2>
-        Tu carrito ({compra.reduce((acc, p) => acc + p.cantidad, 0)} items)
+        🛒 Tu Carrito ({compra.reduce((acc, p) => acc + p.cantidad, 0)} items)
       </h2>
 
       {compra.length === 0 ? (
-        <p>No hay productos en el carrito</p>
+        <div className="compra-carrito-vacio">
+          <p>Tu carrito está vacío</p>
+          <p>¡Explora nuestros productos para empezar a comprar!</p>
+        </div>
       ) : (
-        compra.map((producto) => (
-          <div className="compra-item" key={producto.id}>
-            {producto.imagen && (
-              <img src={producto.imagen} alt={producto.nombre} className="compra-img" />
-            )}
+        <div className="compra-contenedor">
+          <div className="compra-items-lista">
+            {compra.map((producto) => (
+              <div className="compra-item" key={producto.id}>
+                {producto.imagen && (
+                  <img src={producto.imagen} alt={producto.nombre} className="compra-img" />
+                )}
 
-            <div className="compra-detalle">
-              <span><strong>{producto.nombre}</strong></span>
+                <div className="compra-detalle">
+                  <span><strong>{producto.nombre}</strong></span>
+                  <span>{formatoCLP(producto.precio)}</span>
 
-              <label>Cantidad:</label>
-              <input
-                className="contador-input"
-                type="number"
-                min="1"
-                value={producto.cantidad}
-                onChange={(e) =>
-                  cambiarCantidad(producto.id, parseInt(e.target.value))
-                }
-              />
-            </div>
+                  <label>Cantidad:</label>
+                  <input
+                    className="contador-input"
+                    type="number"
+                    min="1"
+                    value={producto.cantidad}
+                    onChange={(e) =>
+                      cambiarCantidad(producto.id, parseInt(e.target.value))
+                    }
+                  />
+                </div>
 
-            <button className="btn-borrar" onClick={() => eliminarProducto(producto.id)}>
-              Borrar
+                <button className="btn-borrar" onClick={() => eliminarProducto(producto.id)}>
+                  🗑️ Borrar
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="compra-resumen">
+            <h3>
+              Total: {formatoCLP(
+                compra.reduce((total, p) => total + p.precio * p.cantidad, 0)
+              )}
+            </h3>
+
+            <button className="btn-comprar" onClick={comprar}>
+              ✓ Completar Compra
             </button>
           </div>
-        ))
-      )}
-
-      {compra.length > 0 && (
-        <>
-          <h3>
-            Total: {formatoCLP(
-              compra.reduce((total, p) => total + p.precio * p.cantidad, 0)
-            )}
-          </h3>
-
-          <button className="btn-comprar" onClick={comprar}>
-            Comprar
-          </button>
-        </>
+        </div>
       )}
     </div>
   );

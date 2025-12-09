@@ -1,6 +1,6 @@
 .flores {
-  text-align: center; 
-  padding: 20px;
+  text-align: center;
+  padding: 20px 20px 50px 20px;
 }
 
 .flores h2 {
@@ -9,11 +9,44 @@
   margin-bottom: 20px;
 }
 
-
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-  gap: 20px; 
-  justify-items: center; 
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 50px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+
+@media (max-width: 768px) {
+  .flores {
+    padding: 40px;
+  }
+
+  .flores h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 50px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flores {
+    padding: 30px;
+  }
+
+  .flores h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .productos-grid {
+    grid-template-columns: 1fr;
+    gap: 30px 10px;
+  }
 }

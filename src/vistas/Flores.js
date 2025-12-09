@@ -16,7 +16,10 @@ function Flores({ agregarAlCompra }) {
         setCargando(true);
         setError(null);
         const datos = await obtenerProductos();
-        setProductos(datos);
+        const productosOrdenados = datos.sort((a, b) => 
+          a.nombre.localeCompare(b.nombre)
+        );
+        setProductos(productosOrdenados);
       } catch (err) {
         console.error('Error al cargar productos:', err);
         setError('No se pudieron cargar los productos. Intenta más tarde.');

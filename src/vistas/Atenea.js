@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Atenea.css';
-import { obtenerProductos, actualizarProducto, eliminarProducto as eliminarProductoAPI } from '../api/inventarioAPI';
+import { obtenerProductos, actualizarProducto, crearProducto as crearProductoAPI, eliminarProducto as eliminarProductoAPI } from '../api/inventarioAPI';
 import { obtenerFormularios, eliminarFormulario } from '../api/formularioAPI';
 
 function Atenea() {
   // Estados para inventario
   const [productos, setProductos] = useState([]);
   const [productoEditando, setProductoEditando] = useState(null);
+  const [productoCreando, setProductoCreando] = useState(false);
   const [productoActualizado, setProductoActualizado] = useState({});
 
   // Estados para formularios
@@ -18,7 +19,6 @@ function Atenea() {
 
   useEffect(() => {
     cargarDatos();
-    // Ocultar la barra de navegación
     const nav = document.querySelector('.nav');
     if (nav) {
       nav.style.display = 'none';
@@ -37,8 +37,10 @@ function Atenea() {
         obtenerProductos(),
         obtenerFormularios(),
       ]);
-      setProductos(productosData);
-      setFormularios(formulariosData);
+      const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
+      const formulariosOrdenados = formulariosData.sort((a, b) => a.id - b.id);
+      setProductos(productosOrdenados);
+      setFormularios(formulariosOrdenados);
     } catch (error) {
       console.error('Error al cargar datos:', error);
     } finally {
@@ -57,6 +59,21 @@ function Atenea() {
     setProductoActualizado({});
   };
 
+  const iniciarCreacion = () => {
+    setProductoCreando(true);
+    setProductoActualizado({
+      nombre: '',
+      precio: 0,
+      descripcion: '',
+      imagen: '',
+    });
+  };
+
+  const cancelarCreacion = () => {
+    setProductoCreando(false);
+    setProductoActualizado({});
+  };
+
   const guardarProducto = async () => {
     try {
       await actualizarProducto(productoActualizado.id, productoActualizado);
@@ -71,6 +88,23 @@ function Atenea() {
     } catch (error) {
       console.error('Error al actualizar producto:', error);
       alert('Error al actualizar el producto');
+    }
+  };
+
+  const crearProducto = async () => {
+    if (!productoActualizado.nombre || !productoActualizado.descripcion || !productoActualizado.imagen) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+    try {
+      const nuevoProducto = await crearProductoAPI(productoActualizado);
+      setProductos([...productos, nuevoProducto]);
+      setProductoCreando(false);
+      setProductoActualizado({});
+      alert('Producto creado correctamente.');
+    } catch (error) {
+      console.error('Error al crear producto:', error);
+      alert('Error al crear el producto');
     }
   };
 
@@ -122,7 +156,7 @@ function Atenea() {
         <div className="atenea-section">
           <h2>Gestión de Inventario</h2>
 
-          {productoEditando ? (
+          {productoEditando || productoCreando ? (
             <div>
               <div className="editar-producto">
                 <div>
@@ -159,60 +193,71 @@ function Atenea() {
                 </div>
               </div>
               <div className="acciones-botones">
-                <button className="btn-guardar" onClick={guardarProducto}>
-                  Guardar
+                <button 
+                  className="btn-guardar" 
+                  onClick={productoCreando ? crearProducto : guardarProducto}
+                >
+                  {productoCreando ? 'Crear Producto' : 'Guardar'}
                 </button>
-                <button className="btn-cancelar" onClick={cancelarEdicion}>
+                <button 
+                  className="btn-cancelar" 
+                  onClick={productoCreando ? cancelarCreacion : cancelarEdicion}
+                >
                   Cancelar
                 </button>
               </div>
             </div>
           ) : (
-            <table className="tabla-inventario">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Precio</th>
-                  <th>Descripción</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productos.length > 0 ? (
-                  productos.map((producto) => (
-                    <tr key={producto.id}>
-                      <td>{producto.id}</td>
-                      <td>{producto.nombre}</td>
-                      <td>${producto.precio.toLocaleString('es-CL')}</td>
-                      <td>{producto.descripcion}</td>
-                      <td>
-                        <div className="acciones-botones">
-                          <button
-                            className="btn-editar"
-                            onClick={() => iniciarEdicion(producto)}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            className="btn-eliminar"
-                            onClick={() => eliminarProducto(producto.id)}
-                          >
-                            Eliminar
-                          </button>
-                        </div>
+            <div>
+              <table className="tabla-inventario">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productos.length > 0 ? (
+                    productos.map((producto) => (
+                      <tr key={producto.id}>
+                        <td>{producto.id}</td>
+                        <td>{producto.nombre}</td>
+                        <td>${producto.precio.toLocaleString('es-CL')}</td>
+                        <td>{producto.descripcion}</td>
+                        <td>
+                          <div className="acciones-botones">
+                            <button
+                              className="btn-editar"
+                              onClick={() => iniciarEdicion(producto)}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              className="btn-eliminar"
+                              onClick={() => eliminarProducto(producto.id)}
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="sin-datos">
+                        No hay productos en el inventario
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="sin-datos">
-                      No hay productos en el inventario
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+              <button className="btn-agregar" onClick={iniciarCreacion} style={{ marginBottom: '20px' }}>
+                Crear Nuevo Producto
+              </button>
+            </div>
           )}
         </div>
 
@@ -241,13 +286,23 @@ function Atenea() {
                       {formulario.mensaje.length > 50 ? '...' : ''}
                     </td>
                     <td>
-                      <button
-                        className="btn-eliminar"
-                        onClick={() => eliminarFormularioFn(formulario.id)}
-                        title="Click para eliminar"
-                      >
-                        Eliminar
-                      </button>
+                      <div className="acciones-formularios">
+                            <button
+                              className="btn-Leer"
+                              onClick={() => alert(`Mensaje completo:\n${formulario.mensaje}`)}
+                              title="Click para Leer."
+                              style={{ marginBottom: '10px' }}
+                            >
+                              Leer
+                            </button>
+                            <button
+                              className="btn-eliminar"
+                              onClick={() => eliminarFormularioFn(formulario.id)}
+                              title="Click para eliminar"
+                            >
+                              Eliminar
+                            </button>
+                          </div>
                     </td>
                   </tr>
                 ))
@@ -264,7 +319,7 @@ function Atenea() {
       </div>
 
       {/* Botón para refrescar datos */}
-      <div style={{ textAlign: 'center', marginTop: '30px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div style={{ textAlign: 'center', marginTop: '40px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="btn-agregar" onClick={cargarDatos}>
           Actualizar Tablas
         </button>

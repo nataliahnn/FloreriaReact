@@ -52,6 +52,27 @@ export const actualizarProducto = async (id, producto) => {
   }
 };
 
+// Crea un nuevo producto
+export const crearProducto = async (producto) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/productos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(producto),
+    });
+    if (!response.ok) {
+      throw new Error(`Error en la API: ${response.status}`);
+    }
+    const datos = await response.json();
+    return datos;
+  } catch (error) {
+    console.error('Error al crear producto:', error);
+    throw error;
+  }
+};
+
 // Elimina un producto por ID
 export const eliminarProducto = async (id) => {
   try {

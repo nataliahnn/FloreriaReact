@@ -1,0 +1,264 @@
+.sobrenosotros-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fffaf0 0%, #fce4ec 100%);
+  padding: 40px 20px;
+}
+
+.sobrenosotros-content {
+  width: 100%;
+  max-width: 900px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(143, 0, 78, 0.15);
+  padding: 60px 40px;
+}
+
+.sobrenosotros-titulo {
+  color: #8F004E;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0 0 40px 0;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.sobrenosotros-intro {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.sobrenosotros-parrafo {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.highlight {
+  color: #8F004E;
+  font-weight: bold;
+}
+
+.sobrenosotros-equipo {
+  margin: 50px 0;
+  padding: 40px 0;
+  border-top: 2px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.sobrenosotros-subtitulo {
+  color: #8F004E;
+  font-size: 2rem;
+  text-align: center;
+  margin: 0 0 15px 0;
+  font-weight: bold;
+}
+
+.sobrenosotros-descripcion {
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+  margin: 0 0 30px 0;
+  line-height: 1.6;
+}
+
+.equipo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.miembro-equipo {
+  background: linear-gradient(135deg, #fff0f5 0%, #ffe6f0 100%);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #d4a5c3;
+  transition: all 0.3s ease;
+}
+
+.miembro-equipo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(143, 0, 78, 0.2);
+}
+
+.miembro-nombre {
+  color: #8F004E;
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+}
+
+.miembro-rol {
+  color: #d4a5c3;
+  font-size: 0.95rem;
+  margin: 0 0 15px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.miembro-descripcion {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sobrenosotros-mision {
+  margin-top: 40px;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #8F004E;
+  border-radius: 8px;
+}
+
+.sobrenosotros-parrafo-final {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .sobrenosotros-content {
+    padding: 50px 30px;
+  }
+
+  .sobrenosotros-titulo {
+    font-size: 2.5rem;
+  }
+
+  .sobrenosotros-subtitulo {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sobrenosotros-container {
+    min-height: auto;
+    padding: 20px 10px;
+  }
+
+  .sobrenosotros-content {
+    padding: 40px 20px;
+  }
+
+  .sobrenosotros-titulo {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .sobrenosotros-subtitulo {
+    font-size: 1.5rem;
+  }
+
+  .sobrenosotros-parrafo {
+    font-size: 1rem;
+  }
+
+  .equipo-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .miembro-equipo {
+    padding: 20px;
+  }
+
+  .miembro-nombre {
+    font-size: 1.1rem;
+  }
+
+  .miembro-rol {
+    font-size: 0.9rem;
+  }
+
+  .miembro-descripcion {
+    font-size: 0.9rem;
+  }
+
+  .sobrenosotros-mision {
+    padding: 20px;
+  }
+
+  .sobrenosotros-parrafo-final {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sobrenosotros-container {
+    min-height: auto;
+    padding: 15px;
+  }
+
+  .sobrenosotros-content {
+    padding: 25px 15px;
+    border-radius: 10px;
+  }
+
+  .sobrenosotros-titulo {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  .sobrenosotros-intro {
+    margin-bottom: 30px;
+  }
+
+  .sobrenosotros-parrafo {
+    font-size: 0.95rem;
+  }
+
+  .sobrenosotros-equipo {
+    padding: 20px 0;
+    margin: 30px 0;
+  }
+
+  .sobrenosotros-subtitulo {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .sobrenosotros-descripcion {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .equipo-grid {
+    gap: 15px;
+  }
+
+  .miembro-equipo {
+    padding: 15px;
+  }
+
+  .miembro-nombre {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .miembro-rol {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+
+  .miembro-descripcion {
+    font-size: 0.85rem;
+  }
+
+  .sobrenosotros-mision {
+    padding: 15px;
+    margin-top: 25px;
+  }
+
+  .sobrenosotros-parrafo-final {
+    font-size: 0.95rem;
+  }
+}
