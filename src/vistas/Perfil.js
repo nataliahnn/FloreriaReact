@@ -171,7 +171,7 @@ function Perfil() {
                   {Array.isArray(b.productos_id) && b.productos_id.length > 0 ? (
                     b.productos_id.map((prodId, idx) => (
                       <span key={idx} className="boleta-item-tag">
-                        {obtenerNombreProducto(prodId)}{idx < b.productos_id.length - 1 ? ', ' : ''}
+                        {obtenerNombreProducto(prodId)} x{b.cantidades && b.cantidades[idx] ? b.cantidades[idx] : 1}{idx < b.productos_id.length - 1 ? ', ' : ''}
                       </span>
                     ))
                   ) : (

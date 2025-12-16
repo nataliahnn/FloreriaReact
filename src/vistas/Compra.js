@@ -38,6 +38,11 @@ function Compra({ compra, setCompra }) {
       return;
     }
 
+    if (!metodoPago || !['debito', 'credito', 'paypal'].includes(metodoPago.toLowerCase())) {
+      alert('Por favor selecciona un método de pago válido (Débito, Crédito o Paypal)');
+      return;
+    }
+
     if (!direccionEnvio.trim()) {
       alert('Por favor ingresa una dirección de envío');
       return;
@@ -55,12 +60,14 @@ function Compra({ compra, setCompra }) {
     try {
       const total = compra.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
       const productosIds = compra.map(p => p.id);
+      const cantidades = compra.map(p => p.cantidad);
 
       const boletaData = {
         usuario_id: usuario.id,
         fecha_compra: Date.now(),
         total: total,
         productos_id: productosIds,
+        cantidades: cantidades,
         metodo_pago: metodoPago,
         direccion_envio: direccionEnvio.trim(),
       };
@@ -143,9 +150,10 @@ function Compra({ compra, setCompra }) {
                 onChange={(e) => setMetodoPago(e.target.value)}
                 style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
               >
-                <option value="Debito">Debito</option>
-                <option value="Credito">Credito</option>
-                <option value="Paypal">Paypal</option>
+                <option value="">Selecciona método de pago</option>
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+                <option value="paypal">PayPal</option>
               </select>
             </div>
 

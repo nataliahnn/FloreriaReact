@@ -64,7 +64,7 @@ function Boleta() {
         <div className="boleta-section">
           <h3>Detalle de Productos</h3>
           <p style={{ fontSize: '0.9em', color: '#666', marginBottom: '10px' }}>
-            IDs de productos: {Array.isArray(boleta.productos_id) ? boleta.productos_id.join(', ') : '-'}
+            IDs de productos: {Array.isArray(boleta.productos_id) ? boleta.productos_id.join('') : '-'}
           </p>
           <table className="boleta-productos">
             <thead>
