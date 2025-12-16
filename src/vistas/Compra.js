@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/Compra.css';
 import { formatoCLP } from '../utils/formatoCLP';
+import { crearBoleta } from '../api/boletaAPI';
+import { getCurrentUser } from '../utils/auth';
 
 function Compra({ compra, setCompra }) {
+  const navigate = useNavigate();
+  const [procesando, setProcesando] = useState(false);
+  const [metodoPago, setMetodoPago] = useState('');
+  const [direccionEnvio, setDireccionEnvio] = useState('');
+
+  useEffect(() => {
+    const usuario = getCurrentUser();
+    if (usuario && usuario.direccion) {
+      setDireccionEnvio(usuario.direccion);
+    }
+  }, []);
 
   const eliminarProducto = (id) => {
     setCompra(compra.filter(producto => producto.id !== id));
@@ -18,9 +32,56 @@ function Compra({ compra, setCompra }) {
     );
   };
 
-  const comprar = () => {
-    alert("Compra realizada correctamente.\nGracias por su compra ❤️");
-    setCompra([]);
+  const comprar = async () => {
+    if (compra.length === 0) {
+      alert('Tu carrito está vacío');
+      return;
+    }
+
+    if (!direccionEnvio.trim()) {
+      alert('Por favor ingresa una dirección de envío');
+      return;
+    }
+
+    const usuario = getCurrentUser();
+    if (!usuario) {
+      alert('Debes iniciar sesión para completar la compra');
+      navigate('/login');
+      return;
+    }
+
+    setProcesando(true);
+
+    try {
+      const total = compra.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
+      const productosIds = compra.map(p => p.id);
+
+      const boletaData = {
+        usuario_id: usuario.id,
+        fecha_compra: Date.now(),
+        total: total,
+        productos_id: productosIds,
+        metodo_pago: metodoPago,
+        direccion_envio: direccionEnvio.trim(),
+      };
+
+      const boletaCreada = await crearBoleta(boletaData);
+      
+      alert("¡Compra realizada correctamente!\nGracias por su compra ❤️");
+      setCompra([]);
+      
+      // Redirigir a la boleta creada
+      if (boletaCreada && boletaCreada.id) {
+        navigate(`/boleta/${boletaCreada.id}`);
+      } else {
+        navigate('/perfil');
+      }
+    } catch (error) {
+      console.error('Error al procesar la compra:', error);
+      alert('Hubo un error al procesar tu compra. Por favor intenta de nuevo.');
+    } finally {
+      setProcesando(false);
+    }
   };
 
   return (
@@ -73,8 +134,41 @@ function Compra({ compra, setCompra }) {
               )}
             </h3>
 
-            <button className="btn-comprar" onClick={comprar}>
-              ✓ Completar Compra
+            <div style={{ marginBottom: '15px', textAlign: 'left' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Método de Pago:
+              </label>
+              <select 
+                value={metodoPago} 
+                onChange={(e) => setMetodoPago(e.target.value)}
+                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              >
+                <option value="Debito">Debito</option>
+                <option value="Credito">Credito</option>
+                <option value="Paypal">Paypal</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '15px', textAlign: 'left' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Dirección de Envío:
+              </label>
+              <textarea 
+                value={direccionEnvio} 
+                onChange={(e) => setDireccionEnvio(e.target.value)}
+                placeholder="Ingresa tu dirección completa"
+                rows="3"
+                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical' }}
+              />
+            </div>
+
+            <button 
+              className="btn-comprar" 
+              onClick={comprar}
+              disabled={procesando}
+              style={{ opacity: procesando ? 0.6 : 1, cursor: procesando ? 'not-allowed' : 'pointer' }}
+            >
+              {procesando ? '⏳ Procesando...' : '✓ Completar Compra'}
             </button>
           </div>
         </div>

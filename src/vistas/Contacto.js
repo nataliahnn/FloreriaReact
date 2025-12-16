@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import{ useState, useEffect } from 'react';
 import '../css/Contacto.css';
 import { enviarFormulario } from '../api/formularioAPI';
+import { getCurrentUser, setCurrentUser } from '../utils/auth';
+import { actualizarUsuario, obtenerUsuarioPorId } from '../api/usuarioAPI';
 
 function Contacto() {
   const [form, setForm] = useState({
     nombre: "",
     email: "",
+    titulo: "",
     mensaje: ""
   });
+
+  useEffect(() => {
+    const usuario = getCurrentUser();
+    if (usuario) {
+      const nombreCompleto = `${usuario.nombre || ''} ${usuario.apellido_pat || ''} ${usuario.apellido_mat || ''}`.trim();
+      setForm(prevForm => ({
+        ...prevForm,
+        nombre: nombreCompleto,
+        email: usuario.email
+      }));
+    }
+  }, []);
 
   const [errores, setErrores] = useState({
     nombre: "",
@@ -32,13 +47,22 @@ function Contacto() {
     let hayError = false;
 
     // Validaciones por campo
-    if (!form.nombre.trim()) {
-      erroresTemp.nombre = "Este campo es obligatorio";
-      hayError = true;
+    const usuario = getCurrentUser();
+
+    if (!usuario) {
+      if (!form.nombre.trim()) {
+        erroresTemp.nombre = "Este campo es obligatorio";
+        hayError = true;
+      }
+
+      if (!form.email.trim()) {
+        erroresTemp.email = "Este campo es obligatorio";
+        hayError = true;
+      }
     }
 
-    if (!form.email.trim()) {
-      erroresTemp.email = "Este campo es obligatorio";
+    if (!form.titulo.trim()) {
+      erroresTemp.titulo = "Este campo es obligatorio";
       hayError = true;
     }
 
@@ -55,13 +79,36 @@ function Contacto() {
     // Si no hay errores, se envía a la API
     setEnviando(true);
     try {
-      await enviarFormulario(form);
-      alert("Formulario enviado correctamente.");
+      const dataToSend = { ...form };
+      const usuario = getCurrentUser();
 
+      if (usuario) {
+        // Concatenar nombres y apellidos, y usar el campo 'email'
+        const nombreCompleto = `${usuario.nombres || ''} ${usuario.apellido_pat || ''} ${usuario.apellido_mat || ''}`.trim();
+        dataToSend.nombre = nombreCompleto;
+        dataToSend.email = usuario.correo;
+      }
+
+      const creado = await enviarFormulario(dataToSend);
+      alert("Formulario enviado correctamente.");
+      
+      // Si hay sesión, agregar referencia del formulario al usuario
+      if (usuario && creado && creado.id) {
+        try {
+          const nuevosIds = Array.isArray(usuario.formulario_id) ? [...usuario.formulario_id, creado.id] : [creado.id];
+          const usuarioActualizado = { ...usuario, formulario_id: nuevosIds };
+          await actualizarUsuario(usuario.id, usuarioActualizado);
+          setCurrentUser(usuarioActualizado);
+        } catch (e) {
+          console.error('Error vinculando formulario a usuario:', e);
+        }
+      }
+      
       // Resetear formulario
       setForm({
         nombre: "",
         email: "",
+        titulo: "",
         mensaje: ""
       });
 
@@ -83,29 +130,43 @@ function Contacto() {
       <form className="contacto-form" onSubmit={handleSubmit}>
         <h2>Contáctanos</h2>
 
-        {/* Nombre */}
-        <label htmlFor="nombre">Nombre:</label>
-        <input 
-          type="text"
-          id="nombre"
-          name="nombre"
-          placeholder="Tu nombre"
-          value={form.nombre}
-          onChange={handleChange}
-        />
-        {errores.nombre && <p className="error-campo">{errores.nombre}</p>}
+        {/* Comprobación de sesión: si hay sesión no pedimos nombre/email */}
+        {!getCurrentUser() && (
+          <>
+            <label htmlFor="nombre">Nombre:</label>
+            <input 
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Tu nombre"
+              value={form.nombre}
+              onChange={handleChange}
+            />
+            {errores.nombre && <p className="error-campo">{errores.nombre}</p>}
 
-        {/* Email */}
-        <label htmlFor="email">Email:</label>
-        <input 
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Tu correo"
-          value={form.email}
+            <label htmlFor="email">Email:</label>
+            <input 
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Tu correo"
+              value={form.email}
+              onChange={handleChange}
+            />
+            {errores.email && <p className="error-campo">{errores.email}</p>}
+          </>
+        )}
+
+        {/* Título del formulario - siempre visible */}
+        <label htmlFor="titulo">Título del Formulario:</label>
+        <input
+          id="titulo"
+          name="titulo"
+          placeholder="Asunto"
+          value={form.titulo}
           onChange={handleChange}
         />
-        {errores.email && <p className="error-campo">{errores.email}</p>}
+        {errores.titulo && <p className="error-campo">{errores.titulo}</p>}
 
         {/* Mensaje */}
         <label htmlFor="mensaje">Mensaje:</label>

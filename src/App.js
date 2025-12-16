@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Inicio from './vistas/Inicio';
 import Flores from './vistas/Flores';
@@ -6,10 +6,20 @@ import Compra from './vistas/Compra';
 import SobreNosotros from './vistas/SobreNosotros';
 import Contacto from './vistas/Contacto';
 import Atenea from './vistas/Atenea';
+import Login from './vistas/Login';
+import Perfil from './vistas/Perfil';
 import './css/App.css';
+import { getCurrentUser } from './utils/auth';
 
 function App() {
   const [compra, setCompra] = useState([]);
+  const [usuario, setUsuario] = useState(getCurrentUser());
+
+  useEffect(() => {
+    const onUserChanged = () => setUsuario(getCurrentUser());
+    window.addEventListener('user-changed', onUserChanged);
+    return () => window.removeEventListener('user-changed', onUserChanged);
+  }, []);
 
   const agregarAlCompra = (producto) => {
     const productoExistente = compra.find(item => item.id === producto.id);
@@ -35,6 +45,7 @@ function App() {
           <Link to="/compra">Carrito ({compra.reduce((acc, p) => acc + p.cantidad, 0)})</Link>
           <Link to="/sobre-nosotros">Sobre Nosotros</Link>
           <Link to="/contacto">Contacto</Link>
+          <Link to={usuario ? '/perfil' : '/login'}>{usuario ? 'Perfil' : 'Iniciar Sesión'}</Link>
         </nav>
 
         <Routes>
@@ -44,6 +55,8 @@ function App() {
           <Route path="/sobre-nosotros" element={<SobreNosotros />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/atenea" element={<Atenea />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/perfil" element={<Perfil />} />
         </Routes>
 
         

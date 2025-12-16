@@ -1,16 +1,36 @@
-// URL base de la API
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://x8ki-letl-twmt.n7.xano.io/api:Vwjp7Cza';
+// URL base de la API de formularios (instancia: ghT0o9fV)
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://x8ki-letl-twmt.n7.xano.io/api:ghT0o9fV';
 
 // Obtiene todos los formularios
 export const obtenerFormularios = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/formulario`);
     if (!response.ok) {
+      // Si el endpoint no existe o está vacío, devolver lista vacía sin romper la app
+      if (response.status === 404) {
+        console.warn('formularioAPI: endpoint /formulario no encontrado (404). Devolviendo []');
+        return [];
+      }
+      // Controlar rate limiting de Xano (429) devolviendo [] para no bloquear UI
+      if (response.status === 429) {
+        console.warn('formularioAPI: límite de peticiones alcanzado (429). Devolviendo [] temporalmente');
+        return [];
+      }
       throw new Error(`Error en la API: ${response.status}`);
     }
     const datos = await response.json();
-    // Asegurar que cada formulario tenga un ID
-    return Array.isArray(datos) ? datos : [];
+    // Aceptar distintos formatos y devolver array
+    if (Array.isArray(datos)) return datos;
+    if (datos == null) return [];
+    if (Array.isArray(datos.data)) return datos.data;
+    if (Array.isArray(datos.items)) return datos.items;
+    if (Array.isArray(datos.records)) return datos.records;
+    if (typeof datos === 'object') {
+      const values = Object.values(datos).filter(v => typeof v === 'object' && v.id);
+      if (values.length) return values;
+    }
+    console.warn('Respuesta inesperada al obtener formularios:', datos);
+    return [];
   } catch (error) {
     console.error('Error al obtener formularios:', error);
     return [];
@@ -21,10 +41,17 @@ export const obtenerFormularios = async () => {
 export const obtenerFormularioPorId = async (id) => {
   try {
     const response = await fetch(`${API_BASE_URL}/formulario/${id}`);
+    if (response.status === 404) {
+      // No existe el formulario con ese id
+      console.warn(`Formulario ${id} no encontrado (404)`);
+      return null;
+    }
     if (!response.ok) {
       throw new Error(`Error en la API: ${response.status}`);
     }
     const datos = await response.json();
+    // Aceptar que la API devuelva { data: {...} }
+    if (datos && typeof datos === 'object' && datos.data) return datos.data;
     return datos;
   } catch (error) {
     console.error(`Error al obtener formulario ${id}:`, error);

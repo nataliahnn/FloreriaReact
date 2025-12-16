@@ -1,0 +1,26 @@
+.perfil-container { padding: 30px; max-width: 900px; margin: 0 auto; }
+.perfil-card { background:#fff; padding:20px; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+.perfil-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0 }
+.perfil-row strong { color:#444 }
+.perfil-actions { margin-top:12px; display:flex; gap:8px; justify-content:flex-end }
+.btn-cerrar { background:#999; color:#fff; border:none; padding:8px 12px; border-radius:6px }
+.perfil-formularios { margin-top:18px }
+
+.perfil-form-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px }
+.perfil-form-item { background:#fff; padding:12px; border-radius:8px; box-shadow:0 6px 14px rgba(0,0,0,0.04) }
+.form-header { display:flex; justify-content:space-between; gap:10px; align-items:center }
+.form-title { color:#8F004E }
+.form-meta { color:#777; font-size:0.9rem }
+.form-message { margin-top:8px; color:#333; line-height:1.35 }
+
+.perfil-boletas { margin-top:18px }
+.perfil-boletas-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px }
+.perfil-boleta-item { background:#fff; padding:12px; border-radius:8px; box-shadow:0 6px 14px rgba(0,0,0,0.04) }
+.boleta-header { display:flex; justify-content:space-between; gap:10px; align-items:center }
+.boleta-title { color:#8F004E }
+.boleta-meta { color:#777; font-size:0.9rem }
+.boleta-info { margin-top:8px; color:#555; font-size:0.9rem }
+.boleta-items { margin-top:8px; display:flex; flex-wrap:wrap; gap:6px }
+.boleta-item-tag { background:#f0f0f0; padding:4px 8px; border-radius:4px; font-size:0.85rem; color:#333 }
+
+@media (max-width:600px){ .perfil-row { flex-direction:column; align-items:flex-start } }

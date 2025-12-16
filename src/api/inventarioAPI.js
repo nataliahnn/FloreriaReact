@@ -1,14 +1,29 @@
 // URL base de la API
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://x8ki-letl-twmt.n7.xano.io/api:Vwjp7Cza';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://x8ki-letl-twmt.n7.xano.io/api:9hVHF-B8';
+
+// Cache simple en memoria para reducir 429 (rate limit)
+let __productosCache = {
+  data: null,
+  ts: 0,
+};
+const CACHE_TTL_MS = 60 * 1000; // 60 segundos
 
 // Obtiene todos los productos del inventario
 export const obtenerProductos = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/productos`);
+    // Devolver desde cache si está fresco
+    const now = Date.now();
+    if (__productosCache.data && (now - __productosCache.ts) < CACHE_TTL_MS) {
+      return __productosCache.data;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/producto`);
     if (!response.ok) {
       throw new Error(`Error en la API: ${response.status}`);
     }
     const datos = await response.json();
+    // Actualizar cache
+    __productosCache = { data: datos, ts: Date.now() };
     return datos;
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -34,7 +49,7 @@ export const obtenerFormularios = async () => {
 // Actualiza un producto por ID
 export const actualizarProducto = async (id, producto) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/productos/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/producto/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +60,8 @@ export const actualizarProducto = async (id, producto) => {
       throw new Error(`Error en la API: ${response.status}`);
     }
     const datos = await response.json();
+    // Invalidar cache en actualizaciones
+    __productosCache = { data: null, ts: 0 };
     return datos;
   } catch (error) {
     console.error(`Error al actualizar producto ${id}:`, error);
@@ -55,7 +72,7 @@ export const actualizarProducto = async (id, producto) => {
 // Crea un nuevo producto
 export const crearProducto = async (producto) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/productos`, {
+    const response = await fetch(`${API_BASE_URL}/producto`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -66,6 +83,7 @@ export const crearProducto = async (producto) => {
       throw new Error(`Error en la API: ${response.status}`);
     }
     const datos = await response.json();
+    __productosCache = { data: null, ts: 0 };
     return datos;
   } catch (error) {
     console.error('Error al crear producto:', error);
@@ -76,12 +94,13 @@ export const crearProducto = async (producto) => {
 // Elimina un producto por ID
 export const eliminarProducto = async (id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/productos/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/producto/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
       throw new Error(`Error en la API: ${response.status}`);
     }
+    __productosCache = { data: null, ts: 0 };
     return true;
   } catch (error) {
     console.error(`Error al eliminar producto ${id}:`, error);
